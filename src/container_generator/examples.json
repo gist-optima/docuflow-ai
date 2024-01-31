@@ -1,0 +1,22 @@
+[
+  {
+    "input": "자체 금융 특화 AI모델 개발 사업 기획서",
+    "output": {
+      "최근 AI모델 시장 분석": {
+        "시장 변화": null,
+        "시장 점유율": null,
+        "시장 가치": null
+      },
+      "사내 경쟁 우위 요소 분석": {
+        "SWOT 분석": {
+          "Strength": null,
+          "Weakness": null,
+          "Opportunity": null,
+          "Threat": null
+        }
+      },
+      "구체적인 개발 계획": null,
+      "기대 효과": null
+    }
+  }
+]
