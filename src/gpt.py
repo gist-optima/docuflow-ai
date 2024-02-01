@@ -7,7 +7,7 @@ from pprint import pprint
 load_dotenv()
 
 class GPT:
-    def __init__(self, prompt, fewshot_examples=[], model="gpt-3.5-turbo-1106"):
+    def __init__(self, prompt, fewshot_examples=[], model="gpt-4-turbo-preview"):
         self.model = model
         self.prompt = prompt
         self.fewshot_examples = fewshot_examples
@@ -21,7 +21,7 @@ class GPT:
 
     def get_response(self, message):
         self.messages.append({"role": "user", "content": message})
-        for _ in range(self.MAX_RETRY):
+        for i in range(self.MAX_RETRY):
             response = self.gpt.chat.completions.create(
                 model=self.model,
                 response_format={"type": "json_object"},
