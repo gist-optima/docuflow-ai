@@ -7,7 +7,7 @@ from pprint import pprint
 load_dotenv()
 
 class GPT:
-    def __init__(self, prompt, fewshot_examples=[], model="gpt-4-turbo-preview"):
+    def __init__(self, prompt, fewshot_examples=[], model="gpt-3.5-turbo-1106"):
         self.model = model
         self.prompt = prompt
         self.fewshot_examples = fewshot_examples
