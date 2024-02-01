@@ -6,6 +6,7 @@ import json
 from pprint import pprint
 import threading
 from flask_restx import Resource, Namespace
+from src.container_generator.container_validator import validate_container_structure
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,21 +33,22 @@ namespace = Namespace("container-generator")
 @namespace.route("/<string:title>")
 class ContainerGenerator(Resource):
     def get(self, title):
-        containers = []
-        def generate_containers():
+        templates = []
+        def generate_templates():
             gpt = GPT(prompt, fewshot_examples)
-            containers.append(
+            templates.append(
                 gpt.get_response(title)
             )
 
-        n = 3
+        n = 6
         threads = []
         for i in range(n):
-            thread = threading.Thread(target=generate_containers, args=[])
+            thread = threading.Thread(target=generate_templates, args=[])
             threads.append(thread)
             thread.start()
         for thread in threads:
             thread.join()
 
-        pprint(containers)
-        return containers
+        
+        templates = list(filter(lambda template: validate_container_structure(template), templates))
+        return templates
