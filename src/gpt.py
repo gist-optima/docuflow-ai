@@ -21,7 +21,7 @@ class GPT:
 
     def get_response(self, message):
         self.messages.append({"role": "user", "content": message})
-        for _ in range(self.MAX_RETRY):
+        for i in range(self.MAX_RETRY):
             response = self.gpt.chat.completions.create(
                 model=self.model,
                 response_format={"type": "json_object"},
