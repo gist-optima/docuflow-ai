@@ -1,0 +1,83 @@
+{
+  "empty": {
+    "input": {},
+    "expected output": false
+  },
+  "minimal": {
+    "input": {
+      "a": null
+    },
+    "expected output": true
+  },
+  "nested-depth: 1": {
+    "input": {
+      "a": {
+        "b": null
+      }
+    },
+    "expected output": true
+  },
+  "nested-depth: 2": {
+    "input": {
+      "a": {
+        "b": {
+          "c": null
+        }
+      }
+    },
+    "expected output": true
+  },
+  "nested-depth: 3": {
+    "input": {
+      "a": {
+        "b": {
+          "c": {
+            "d": null
+          }
+        }
+      }
+    },
+    "expected output": true
+  },
+  "nested-depth: 4": {
+    "input": {
+      "a": {
+        "b": {
+          "c": {
+            "d": {
+              "e": null
+            }
+          }
+        }
+      }
+    },
+    "expected output": false
+  },
+  "leaf, branch mixed": {
+    "input": {
+      "a": null,
+      "b": {
+        "c": null
+      }
+    },
+    "expected output": true
+  },
+  "leaf not None(int)": {
+    "input": {
+      "a": 1
+    },
+    "expected output": false
+  },
+  "leaf not None(true)": {
+    "input": {
+      "a": true
+    },
+    "expected output": false
+  },
+  "array": {
+    "input": {
+      "a": []
+    },
+    "expected output": false
+  }
+}
