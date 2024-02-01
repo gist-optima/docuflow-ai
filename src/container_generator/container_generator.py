@@ -3,6 +3,7 @@ sys.path.append("..")
 from gpt import GPT
 import json
 from pprint import pprint
+import threading
 
 prompt = {}
 with open("prompt.json", "r", encoding="UTF8") as f:
@@ -19,7 +20,22 @@ with open("examples.json", "r", encoding="UTF-8") as f:
         example["input"] = json.dumps(example["input"], ensure_ascii=False, indent=4)
         example["output"] = json.dumps(example["output"], ensure_ascii=False, indent=4)
 
-gpt = GPT(prompt, fewshot_examples)
+containers = []
+def generate_containers():
+    gpt = GPT(prompt, fewshot_examples)
+    containers.append(
+        gpt.get_response("KPMG 아이디어톤 계획서 - 아이디어톤을 통한 신사업 및 인재 발굴")
+    )
 
-containers =  gpt.get_response("KPMG 아이디어톤 계획서 - 아이디어톤을 통한 신사업 및 인재 발굴")
-pprint(containers)
+n = 3
+threads = []
+for i in range(n):
+    thread = threading.Thread(target=generate_containers, args=[])
+    threads.append(thread)
+    thread.start()
+for thread in threads:
+    thread.join()
+
+# for container in containers:
+#     pprint(container)
+
