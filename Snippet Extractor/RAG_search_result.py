@@ -1,7 +1,3 @@
-# %% import modules & libraries
-import fitz #scrap pdf
-import magic 
-
 # %% search result define
 search_results=[{'title': '[아이디어톤] 주제 선정 및 제출 (1)',
   'link': 'https://velog.io/@heokyeongju/%EC%95%84%EC%9D%B4%EB%94%94%EC%96%B4%ED%86%A4-%EC%A3%BC%EC%A0%9C-%EC%84%A0%EC%A0%95-1',
@@ -53,16 +49,18 @@ def scrape_docx(path):
           for cell in row.iter(CELL): 
               doc_text.append(''.join(node.text for node in cell.iter(TEXT)))
 
-  return doc_text
+  return "".join(doc_text)
 
 # %% scrape pdf file
+import fitz
+
 def scrape_pdf(path):
   doc=fitz.open(path)
   doc_text=[]
   for page in doc:
       text=page.get_text()
       doc_text.append(text)
-  return doc_text
+  return "".join(doc_text)
 
 # %% scrape web
 import requests
@@ -97,9 +95,11 @@ def scrape_web(url):
     doc_text=tag.get_text().strip()
     doc_texts.append(doc_text)
 
-  return doc_texts
+  return "".join(doc_texts)
 
 # %% scrap website, file
+import magic
+
 doc_texts=[]
 for result in search_results:
     doc_text=""
@@ -118,11 +118,26 @@ for result in search_results:
        doc_text=scrape_web(url)
     doc_texts.append(doc_text)
   
-# %% split
-print(len(doc_texts))
+# %% splitter
+search_results_splits=[]
+
 for doc_text in doc_texts:
-   print('-'*100)
-   print(doc_text)
+  splits=doc_text.split('다.')
+  results=[]
+  cur_len=0
+  start=0
+  for i in range(len(splits)):
+    cur_len+=len(splits[i])
+    if cur_len>200:
+        if start!=i:
+          result="다.".join(splits[j] for j in range(start, i))+"다."
+          results.append(result)
+        start=i
+    if i==len(splits)-1:
+        result="다.".join(splits[j] for j in range(start, i))
+        if result!="":
+          results.append(result)
+  search_results_splits.append(results)
 
 # %% embedding and store in DB
 
