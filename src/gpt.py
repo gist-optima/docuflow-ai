@@ -1,13 +1,12 @@
-from openai import OpenAI
+from openai import AzureOpenAI
 import json
 import os
 from dotenv import load_dotenv
-from pprint import pprint
 
 load_dotenv()
 
 class GPT:
-    def __init__(self, prompt, fewshot_examples=[], model="gpt-3.5-turbo-1106"):
+    def __init__(self, prompt, fewshot_examples=[], model=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")):
         self.model = model
         self.prompt = prompt
         self.fewshot_examples = fewshot_examples
@@ -15,7 +14,11 @@ class GPT:
         for example in fewshot_examples:
             self.messages.append({"role": "user", "content": example["input"]})
             self.messages.append({"role": "assistant", "content": example["output"]})
-        self.gpt = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.gpt = AzureOpenAI(
+            api_key=os.getenv("AZURE_OPENAI_KEY"), 
+            api_version="2023-07-01-preview", 
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
+        )
         self.MAX_RETRY = 3
         self.response = ""
 
