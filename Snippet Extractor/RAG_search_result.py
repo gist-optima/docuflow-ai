@@ -1,5 +1,6 @@
 # %% import modules & libraries
-import magic
+import fitz #scrap pdf
+import magic 
 
 # %% search result define
 search_results=[{'title': '[아이디어톤] 주제 선정 및 제출 (1)',
@@ -31,11 +32,11 @@ def download_file(url='https://ibus.hanyang.ac.kr/front/community/notice/file-lo
   url_file=urllib.request.urlretrieve(url, path)
   return path
 
-# %% scrap word file
+# %% scrape word file
 import zipfile 
 import xml.etree.ElementTree 
  
-def scrap_docx(path):
+def scrape_docx(path):
   doc_text=[]
   WORD_NAMESPACE = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}' 
   PARA = WORD_NAMESPACE + 'p' 
@@ -54,9 +55,8 @@ def scrap_docx(path):
 
   return doc_text
 
-# %% scrap pdf file
-import fitz
-def scrap_pdf(path):
+# %% scrape pdf file
+def scrape_pdf(path):
   doc=fitz.open(path)
   doc_text=[]
   for page in doc:
@@ -64,9 +64,44 @@ def scrap_pdf(path):
       doc_text.append(text)
   return doc_text
 
+# %% scrape web
+import requests
+from requests.exceptions import HTTPError
+
+def request_web(url):
+  try:
+    resp=requests.get(url)
+    resp.raise_for_status()
+    
+  except HTTPError as Err:
+    print("HTTP Error occurred")
+  except Exception as Err:
+    print("Unknown Error occurred")
+
+  else:
+    print('Success')
+  return resp
+
+# %%
+from bs4 import BeautifulSoup
+
+def scrape_web(url):
+  doc_texts=[]
+  resp=request_web(url)
+  html=resp.content
+  parse=BeautifulSoup(html, "html.parser")
+  print(parse.title.string)
+
+  tags=parse.find_all(["p", "h1", "h2", "h3"])
+  for tag in tags:
+    doc_text=tag.get_text().strip()
+    doc_texts.append(doc_text)
+
+  return doc_texts
+
 # %% scrap website, file
+doc_texts=[]
 for result in search_results:
-    doc_texts=[]
     doc_text=""
     url=result["link"] 
     if ("file-load" in url) or ("download" in url):
@@ -76,17 +111,18 @@ for result in search_results:
         print(file_signature)
 
         if "Microsoft Word" in file_signature:
-           doc_text=scrap_docx(path)
+           doc_text=scrape_docx(path)
         elif "PDF" in file_signature:
-           doc_text=scrap_pdf(path)
-        
-        doc_texts.append(doc_text)
+           doc_text=scrape_pdf(path)
     else:
-       #web scrap
-       pass
+       doc_text=scrape_web(url)
+    doc_texts.append(doc_text)
   
-
 # %% split
+print(len(doc_texts))
+for doc_text in doc_texts:
+   print('-'*100)
+   print(doc_text)
 
 # %% embedding and store in DB
 
