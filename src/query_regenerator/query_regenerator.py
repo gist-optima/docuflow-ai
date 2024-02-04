@@ -3,8 +3,6 @@ import sys
 sys.path.append("..")
 from gpt import GPT
 import json
-from pprint import pprint
-import threading
 from flask import request, abort
 from flask_restx import Resource, Namespace
 
@@ -44,6 +42,5 @@ class QueryRegenerator(Resource):
         global gpt
         message = json.dumps(body, ensure_ascii=False)
         response = gpt.get_response(message)
-        pprint(response["thought process"])
         return response["queries"]
         
