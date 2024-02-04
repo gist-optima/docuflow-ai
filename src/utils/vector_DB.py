@@ -18,7 +18,7 @@ class VectorDB:
 
     def embed(self, texts):
         embeddings = [response["embedding"] for response in self.client.embeddings.create(
-            model="text-embedding-ada-002", 
+            model=os.getenv("AZURE_OPENAI_DEPLOYMENT"), 
             input=texts
         )["data"]]
         return embeddings
