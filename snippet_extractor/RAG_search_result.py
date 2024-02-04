@@ -16,16 +16,20 @@ search_results=[{'title': '[아이디어톤] 주제 선정 및 제출 (1)',
   'snippet': '2023. 6. 9. ... 1. 사전워크숍 진행 일시 : 2023년 7월 14일 (금) 10:00~14:30. 2. 진행방식 : 오프라인 (대면형) 워크숍 진행. 3. 대상 : ESG 아이디어톤 참가자 60명. *\xa0...'}]
 
 # %% file download
-import urllib.request
+from urllib.request import urlretrieve
 import string
 import random
+import os
+import ssl
 
+# %%
 def download_file(url='https://ibus.hanyang.ac.kr/front/community/notice/file-load?id=3204&fileId=4840'
 ):
   letters=string.ascii_letters
   random_string=random.sample(letters, 10)
-  path='C:\\Users\\user\\AppData\\Local\\Temp\\'+"optima-"+"".join(random_string)
-  url_file=urllib.request.urlretrieve(url, path)
+  path=os.path.abspath(os.getcwd()) + "/downloads/" + "".join(random_string)
+  ssl._create_default_https_context = ssl._create_unverified_context
+  url_file=urlretrieve(url, path)
   return path
 
 # %% scrape word file
