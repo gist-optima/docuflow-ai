@@ -14,9 +14,9 @@ class GPT:
         for example in fewshot_examples:
             self.messages.append({"role": "user", "content": example["input"]})
             self.messages.append({"role": "assistant", "content": example["output"]})
-        self.gpt = AzureOpenAI(
+        self.client = AzureOpenAI(
             api_key=os.getenv("AZURE_OPENAI_KEY"), 
-            api_version="2023-07-01-preview", 
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION"), 
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
         )
         self.MAX_RETRY = 3
@@ -25,7 +25,7 @@ class GPT:
     def get_response(self, message):
         self.messages.append({"role": "user", "content": message})
         for i in range(self.MAX_RETRY):
-            response = self.gpt.chat.completions.create(
+            response = self.client.chat.completions.create(
                 model=self.model,
                 response_format={"type": "json_object"},
                 messages=self.messages,
@@ -38,4 +38,3 @@ class GPT:
         else:
             return None
         return self.response
-        

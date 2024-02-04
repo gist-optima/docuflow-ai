@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append("..")
-from gpt import GPT
+from src.utils.gpt import GPT
 import json
 from flask import request, abort
 from flask_restx import Resource, Namespace
