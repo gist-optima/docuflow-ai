@@ -1,3 +1,4 @@
+# %%
 from openai import AzureOpenAI
 import os
 from dotenv import load_dotenv
@@ -17,20 +18,18 @@ class VectorDB:
         )
 
     def embed(self, texts):
-        embeddings = [response["embedding"] for response in self.client.embeddings.create(
+        response = self.client.embeddings.create(
             model=os.getenv("AZURE_OPENAI_DEPLOYMENT_ADA"), 
             input=texts
-        )["data"]]
+        )
+        embeddings = [embedding_data["embedding"] for embedding_data in response.model_dump()["data"]]
         return embeddings
 
-    def add_vector(self, vectors):
-        self.index.upsert(
-            vectors=vectors
-        )
-
     def add(self, texts):
-        embeddings = self.embed(texts)
-        self.add_vector(embeddings)
+        vectors = self.embed(texts)
+        self.index.upsert(
+            vectors=[{"id": text, "values": vector} for text, vector in zip(texts, vectors)]
+        )
     
     def search(self, query, top_k=5):
         query_vector = self.embed(query)
@@ -39,5 +38,5 @@ class VectorDB:
             top_k=top_k, 
             include_metadata=True, 
             include_values=True
-        )
+        )["matches"]
         return result
