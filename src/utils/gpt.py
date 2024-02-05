@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class GPT:
-    def __init__(self, prompt, fewshot_examples=[], model=os.getenv("AZURE_OPENAI_DEPLOYMENT")):
+    def __init__(self, prompt, fewshot_examples=[], model=os.getenv("AZURE_OPENAI_DEPLOYMENT_GPT")):
         self.model = model
         self.prompt = prompt
         self.fewshot_examples = fewshot_examples
