@@ -33,17 +33,36 @@ namespace = Namespace("snippet-extractor")
 
 @namespace.route("")
 class snippet_extractor(Resource):
+    def __init__(self,*args, **kwargs):
+        super().__init__(self, *args, **kwargs)
+        self.gpt = GPT(prompt, fewshot_examples)
+        
     def post(self):
         body = request.json
-        if not "articles" in body:
-            abort(400, f"articles should be provided as body object")
+        keys = ["articles", "all contents", "focused container", "guiding vector", "shown snippets", "preffered snippet"]
+        if not all(key in body for key in keys):
+            abort(400, f"all keys: {keys} should be provided via body")
         articles = body["articles"]
+        all_contents = body["all contents"]
+        focused_container = body["focused container"]
+        guiding_vector = body["guiding vector"]
+        shown_snippets = body["shown snippets"]
+        preffered_snippet = body["preffered snippet"]
         
         snippets = []
         threads = []
+        context = {
+            "all contents": all_contents, 
+            "focused container": focused_container, 
+            "guiding vector": guiding_vector, 
+            "shown snppets": shown_snippets, 
+            "preffered snippet": preffered_snippet
+        }
         for article in articles:
             thread = threading.Thread(
-                target=lambda article: snippets.append(self.extract_snippet_from_article(article)), 
+                target=lambda article: snippets.append(
+                    self.extract_snippet_from_article(context, article)
+                    ), 
                 args=[article, ]
             )
             threads.append(thread)
@@ -53,8 +72,8 @@ class snippet_extractor(Resource):
         
         return snippets
 
-    def extract_snippet_from_article(self, article):
-        gpt = GPT(prompt, fewshot_examples)
-        return gpt.get_response(article)
+    def extract_snippet_from_article(self, context, article):
+        context["article"] = article
+        return self.gpt.get_response(json.dumps(context, ensure_ascii=False, indent=4))
 
         
