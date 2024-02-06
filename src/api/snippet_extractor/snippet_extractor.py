@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append("..")
-from src.utils.gpt import GPT
+from utils.gpt import GPT
 import json
 
 import threading
@@ -74,6 +74,6 @@ class snippet_extractor(Resource):
 
     def extract_snippet_from_article(self, context, article):
         context["article"] = article
-        return self.gpt.get_response(json.dumps(context, ensure_ascii=False, indent=4))
+        return self.gpt.get_response(json.dumps(context, ensure_ascii=False, indent=4))["snippets"]
 
         

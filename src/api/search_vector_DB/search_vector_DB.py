@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from src.utils.vector_DB import VectorDB
+from utils.vector_DB import VectorDB
 
 # flask rest api
 from flask_restx import Resource, Namespace

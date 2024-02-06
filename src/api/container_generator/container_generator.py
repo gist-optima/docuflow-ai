@@ -1,9 +1,10 @@
 import os
 import sys
 sys.path.append("..")
-from src.utils.gpt import GPT
+from utils.gpt import GPT
+from api.container_generator.container_validator import validate_container_structure
 import json
-from flask import request, abort
+import threading
 from flask_restx import Resource, Namespace
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -26,21 +27,27 @@ with open(fewshot_examples_file_path, "r", encoding="UTF-8") as f:
         example["input"] = json.dumps(example["input"], ensure_ascii=False, indent=4)
         example["output"] = json.dumps(example["output"], ensure_ascii=False, indent=4)
 
-namespace = Namespace("query-regenerator")
+namespace = Namespace("container-generator")
 
-gpt = GPT(prompt, fewshot_examples)
+@namespace.route("/<string:title>")
+class ContainerGenerator(Resource):
+    def get(self, title):
+        templates = []
+        def generate_templates():
+            gpt = GPT(prompt, fewshot_examples)
+            templates.append(
+                gpt.get_response(title)
+            )
 
-@namespace.route("")
-class QueryRegenerator(Resource):
-    def post(self):
-        body = request.json
+        n = 6
+        threads = []
+        for i in range(n):
+            thread = threading.Thread(target=generate_templates, args=[])
+            threads.append(thread)
+            thread.start()
+        for thread in threads:
+            thread.join()
 
-        keys = ["all contents", "focused container", "guiding vector", "previous query", "shown snippets", "preffered snippet", "n"]
-        if not all(key in body for key in keys):
-            abort(400, f"all keys: {keys} should be provided via body")
-
-        global gpt
-        message = json.dumps(body, ensure_ascii=False)
-        response = gpt.get_response(message)
-        return response["queries"]
-        
+        templates = list(filter(lambda template: validate_container_structure(template), templates))
+        return templates
+# %%

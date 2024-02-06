@@ -19,7 +19,7 @@ class GPT:
             api_version=os.getenv("AZURE_OPENAI_API_VERSION"), 
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
         )
-        self.MAX_RETRY = 3
+        self.MAX_RETRY = 1
         self.response = ""
 
     def get_response(self, message):
