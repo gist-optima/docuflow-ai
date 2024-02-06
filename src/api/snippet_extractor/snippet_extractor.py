@@ -1,6 +1,8 @@
 import os
 import sys
-sys.path.append("..")
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
+
 from utils.gpt import GPT
 import json
 
@@ -9,7 +11,7 @@ import threading
 from flask import request, abort
 from flask_restx import Resource, Namespace
 
-current_directory = os.path.dirname(os.path.abspath(__file__))
+current_directory = BASE_PATH + "\\snippet_extractor"
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
 fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
