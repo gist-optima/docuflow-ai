@@ -1,14 +1,15 @@
 import os
 import sys
-sys.path.append("..")
-from src.utils.gpt import GPT
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
+
+from utils.gpt import GPT
+from api.container_generator.container_validator import validate_container_structure
 import json
-from pprint import pprint
 import threading
 from flask_restx import Resource, Namespace
-from src.container_generator.container_validator import validate_container_structure
 
-current_directory = os.path.dirname(os.path.abspath(__file__))
+current_directory = BASE_PATH + "\\container_generator"
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
 fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
@@ -49,6 +50,6 @@ class ContainerGenerator(Resource):
         for thread in threads:
             thread.join()
 
-        
         templates = list(filter(lambda template: validate_container_structure(template), templates))
         return templates
+# %%

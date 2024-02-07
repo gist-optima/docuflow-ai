@@ -1,6 +1,9 @@
+import os
 import sys
-sys.path.append("..")
-from src.utils.vector_DB import VectorDB
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
+
+from utils.vector_DB import VectorDB
 
 # flask rest api
 from flask_restx import Resource, Namespace

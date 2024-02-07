@@ -1,7 +1,9 @@
 import os
 import sys
-sys.path.append("..")
-from src.utils.gpt import GPT
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
+
+from utils.gpt import GPT
 import json
 
 import threading
@@ -9,7 +11,7 @@ import threading
 from flask import request, abort
 from flask_restx import Resource, Namespace
 
-current_directory = os.path.dirname(os.path.abspath(__file__))
+current_directory = BASE_PATH + "\\snippet_extractor"
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
 fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
@@ -74,6 +76,6 @@ class snippet_extractor(Resource):
 
     def extract_snippet_from_article(self, context, article):
         context["article"] = article
-        return self.gpt.get_response(json.dumps(context, ensure_ascii=False, indent=4))
+        return self.gpt.get_response(json.dumps(context, ensure_ascii=False, indent=4))["snippets"]
 
         

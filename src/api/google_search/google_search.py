@@ -1,5 +1,7 @@
-# %%
 import os
+import sys
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
 
 # get links
 from langchain.tools import Tool
@@ -153,3 +155,4 @@ class GoogleSearch(Resource):
                 doc_text = f"Unsopported file type: {file_signature}"
 
         return doc_text
+# %%
