@@ -36,12 +36,6 @@ model=namespace.model('Payload',{
 
 query_params=[]
 
-class QueryParams:
-    def __init__(self, all_contents, focused_container, guiding_vector):
-        self.all_contents=all_contents
-        self.focused_container=focused_container
-        self.guiding_vector=guiding_vector
-
 @namespace.route('/')
 class QueryGenerator(Resource):
     @namespace.expect(model)
@@ -51,5 +45,5 @@ class QueryGenerator(Resource):
         global gpt
         message = json.dumps(body, ensure_ascii=False)
         response = gpt.get_response(message)
-        return response["queries"]
+        return {"query list": response["queries"]}
         
