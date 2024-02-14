@@ -33,7 +33,7 @@ with open(fewshot_examples_file_path, "r", encoding="UTF-8") as f:
 
 namespace = Namespace("snippet-extractor")
 
-@namespace.route("")
+@namespace.route("/")
 class snippet_extractor(Resource):
     def __init__(self,*args, **kwargs):
         super().__init__(self, *args, **kwargs)
@@ -41,7 +41,7 @@ class snippet_extractor(Resource):
         
     def post(self):
         body = request.json
-        keys = ["articles", "all contents", "focused container", "guiding vector", "shown snippets", "preffered snippet"]
+        keys = ["articles", "all contents", "focused container", "guiding vector", "shown snippets", "preferred snippet"]
         if not all(key in body for key in keys):
             abort(400, f"all keys: {keys} should be provided via body")
         articles = body["articles"]
@@ -49,7 +49,7 @@ class snippet_extractor(Resource):
         focused_container = body["focused container"]
         guiding_vector = body["guiding vector"]
         shown_snippets = body["shown snippets"]
-        preffered_snippet = body["preffered snippet"]
+        preferred_snippet = body["preferred snippet"]
         
         snippets = []
         threads = []
@@ -57,8 +57,8 @@ class snippet_extractor(Resource):
             "all contents": all_contents, 
             "focused container": focused_container, 
             "guiding vector": guiding_vector, 
-            "shown snppets": shown_snippets, 
-            "preffered snippet": preffered_snippet
+            "shown snippets": shown_snippets, 
+            "preferred snippet": preferred_snippet
         }
         for article in articles:
             thread = threading.Thread(
