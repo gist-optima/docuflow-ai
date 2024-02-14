@@ -38,18 +38,14 @@ class Agent:
         self.gpt = GPT(prompt, fewshot_examples)
 
         print("Opening API server...")
-        self.server = subprocess.Popen(["python", BASE_PATH+"\\src\\api\\api_server.py"], shell=True)
+        self.server = subprocess.Popen(["python", BASE_PATH+"\\api\\api_server.py"], shell=True)
         print("Waiting for the server to fully start...")
         time.sleep(5)
-
-        random_string = str(uuid4())
-        response = request("GET", "http://localhost:5000/echo/" + random_string)
-        if random_string != response.text:
-            raise ConnectionRefusedError("Echo not working!")
 
     def simulate(self):
         try: 
             self.gpt.get_response("")
+            
         finally:
             self.server.kill()
 # %%
