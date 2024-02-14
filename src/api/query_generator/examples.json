@@ -1,0 +1,31 @@
+[
+  {
+    "input": {
+      "all contents": {
+        "최근 AI모델 시장 분석": {
+          "시장 변화": null,
+          "시장 점유율": null,
+          "시장 가치": null
+        },
+        "사내 경쟁 우위 요소 분석": {
+          "SWOT 분석": {
+            "Strength": null,
+            "Weakness": null,
+            "Opportunity": null,
+            "Threat": null
+          }
+        },
+        "구체적인 개발 계획": null,
+        "기대 효과": null
+      },
+      "focused container": "시장 변화",
+      "guiding vector": "보강할 수 있는 정량적 근거"
+    },
+    "output": [
+      "AI 시장 변화 통계",
+      "AI 시장 분석 데이터",
+      "AI 시장 가능성 분석 데이터",
+      "인공지능 시장 분석표"
+    ]
+  }
+]
