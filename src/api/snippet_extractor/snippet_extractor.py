@@ -49,7 +49,7 @@ class snippet_extractor(Resource):
         focused_container = body["focused container"]
         guiding_vector = body["guiding vector"]
         shown_snippets = body["shown snippets"]
-        preffered_snippet = body["preffered snippet"]
+        preferred_snippet = body["preferred snippet"]
         
         snippets = []
         threads = []
@@ -57,8 +57,8 @@ class snippet_extractor(Resource):
             "all contents": all_contents, 
             "focused container": focused_container, 
             "guiding vector": guiding_vector, 
-            "shown snppets": shown_snippets, 
-            "preffered snippet": preffered_snippet
+            "shown snippets": shown_snippets, 
+            "preferred snippet": preferred_snippet
         }
         for article in articles:
             thread = threading.Thread(
