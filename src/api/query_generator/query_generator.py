@@ -29,7 +29,7 @@ namespace = Namespace("query-generator")
 
 gpt = GPT(prompt, fewshot_examples)
 
-model=namespace.model('Payload',{
+input_schema=namespace.model('Payload',{
     'focused container': fields.String(required=True, description="보고서의 전체 내용 중 현재 사용자가 관심있는 부분"),
     'guiding vector': fields.String(required=True, description="사용자가 원하는 검색의 방향성") # guiding vector may not be required: todo
 })
@@ -44,7 +44,7 @@ class QueryParams:
 
 @namespace.route('/')
 class QueryGenerator(Resource):
-    @namespace.expect(model)
+    @namespace.expect(input_schema)
     def post(self):
         body=request.json
 
