@@ -10,7 +10,7 @@ class Chunk:
     def chunck(self, content: str, else_text=""):
         content_encoding = self.encoder(content)
         else_text_encoding = self.encoder(else_text)
-        max_token = self.max_token - len(else_text)
+        max_token = self.max_token - len(else_text_encoding)
         
         chunks = []
         while len(content_encoding) > 0:
