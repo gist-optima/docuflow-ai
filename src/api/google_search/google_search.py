@@ -39,7 +39,7 @@ class GoogleSearch(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(self, *args, **kwargs)
         self.search = GoogleSearchAPIWrapper()
-        self.download_dir_path = os.path.dirname(os.path.abspath(__file__)) + "\\downloads\\"
+        self.download_dir_path = os.path.join(os.path.dirname(os.path.abspath(__file__)) ,"downloads")
 
     def get(self, query, n=5):
         links = self.get_links(query, n)
@@ -72,14 +72,14 @@ class GoogleSearch(Resource):
         return [result["link"] for result in results]
     
     def download_file_from_url(self, url):
-        path=self.download_dir_path + str(uuid4())
+        path=os.path.join(self.download_dir_path, str(uuid4()))
         ssl._create_default_https_context = ssl._create_unverified_context
         urlretrieve(url, path)
 
         return path
     
     def clear_downloaded_files(self):
-        file_paths = [self.download_dir_path + "\\" + filename for filename in os.listdir(self.download_dir_path)]
+        file_paths = [os.path.join(self.download_dir_path, filename) for filename in os.listdir(self.download_dir_path)]
         threads = []
         for path in file_paths:
             thread = Thread(target=lambda path: os.remove(path), args=[path, ])
