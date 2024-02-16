@@ -1,6 +1,6 @@
 services:
   docuflow-ai:
-    image: siwonpada/docuflow-ai:0.1.0
+    build: .
     ports:
       - "5000:5000"
     env_file:

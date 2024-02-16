@@ -8,7 +8,7 @@ import json
 from flask import request, abort
 from flask_restx import Resource, Namespace, fields
 
-current_directory = BASE_PATH + "\\query_generator"
+current_directory = os.path.join(BASE_PATH,"query_generator")
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
 fewshot_examples_file_path = os.path.join(current_directory, "examples.json")

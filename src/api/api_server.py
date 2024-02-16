@@ -24,4 +24,4 @@ api.add_namespace(echo_namespace)
 api.add_namespace(query_generator)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="localhost")
+    app.run(debug=True, host="0.0.0.0")

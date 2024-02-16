@@ -11,7 +11,7 @@ import threading
 from flask import request, abort
 from flask_restx import Resource, Namespace
 
-current_directory = BASE_PATH + "\\snippet_extractor"
+current_directory = os.path.join(BASE_PATH, "snippet_extractor")
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
 fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
