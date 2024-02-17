@@ -20,7 +20,7 @@ class SearchVectorDB(Resource):
         self.db = VectorDB()
     
     def get(self):
-        query = request.args.ge("query")
+        query = request.args.get("query")
         top_k = request.args.get("top-k")
         threshold = request.args.get("threshold")
         top_k = int(top_k) if top_k else None
@@ -34,6 +34,7 @@ class SearchVectorDB(Resource):
         return self.db.search(**params)
     
     def post(self):
-        texts = request.json
+        json_data = request.json
+        texts = [(id, text) for id, text in json_data.items()]
         self.db.add(texts)
         return None
