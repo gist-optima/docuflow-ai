@@ -34,7 +34,6 @@ class SearchVectorDB(Resource):
         return self.db.search(**params)
     
     def post(self):
-        json_data = request.json
-        texts = [(id, text) for id, text in json_data.items()]
-        self.db.add(texts)
+        json_data = request.args.get("text")
+        self.db.add({json_data: json_data})
         return None
