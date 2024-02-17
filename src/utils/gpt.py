@@ -37,7 +37,7 @@ class GPT:
                     model=self.model,
                     messages=self.messages,
                 )
-            response.response_format={}
+
             try:
                 self.response = json.loads(response.choices[0].message.content)
             except:
