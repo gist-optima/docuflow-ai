@@ -35,7 +35,8 @@
           "content": "현재 AI시장 규모는 13조 달러로 최근 150%의 성장률을 보이고 있습니다. 통계 자료는 아래와 같습니다. "
         }
       ],
-      "preffered snippet": 2
+      "preffered snippet": 2,
+      "n": 4
     },
     "output": [
       "AI 시장 변화 통계",

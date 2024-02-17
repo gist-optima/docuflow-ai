@@ -1,15 +1,16 @@
+# %%
 from tiktoken import encoding_for_model
 
 class Chunk:
     def __init__(self, model="gpt-4-1106-preview"):
         self.model = model
         if model == "gpt-4-1106-preview":
-            self.max_token = 128000
+            self.max_token = 8
         self.encoder = encoding_for_model(self.model)
     
-    def chunck(self, content: str, else_text=""):
-        content_encoding = self.encoder(content)
-        else_text_encoding = self.encoder(else_text)
+    def chunk(self, content: str, else_text=""):
+        content_encoding = self.encoder.decode(self.encoder.encode(content))
+        else_text_encoding = self.encoder.encode(else_text)
         max_token = self.max_token - len(else_text_encoding)
         
         chunks = []
@@ -18,3 +19,9 @@ class Chunk:
             content_encoding = content_encoding[max_token:]
 
         return chunks
+    
+# %%
+chunk = Chunk()
+
+# %%
+chunk.chunk("hello world", "hi")

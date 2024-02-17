@@ -49,7 +49,7 @@ class QueryGenerator(Resource):
         body=request.json
 
         global gpt
-        message = json.dumps(body, ensure_ascii=False)
+        message = json.dumps(body, ensure_ascii=False, indent=2)
         response = gpt.get_response(message)
         return response["queries"]
         

@@ -45,7 +45,7 @@ class ContainerGenerator(Resource):
                 gpt.get_response(title)
             )
 
-        n = 6
+        n = 3
         threads = []
         for i in range(n):
             thread = threading.Thread(target=generate_templates, args=[])
