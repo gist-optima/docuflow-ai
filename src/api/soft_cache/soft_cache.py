@@ -5,17 +5,25 @@ sys.path.append(BASE_PATH)
 
 from utils.vector_DB import VectorDB
 
+import json
+
 # flask rest api
 from flask_restx import Resource, Namespace
+from flask import request
 
-namespace = Namespace("search-vector-DB")
+namespace = Namespace("soft-cache")
 
-@namespace.route("/<string:query>/<int:n>")
+@namespace.route("")
 class SearchVectorDB(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(self, *args, **kwargs)
         self.db = VectorDB()
     
-    def get(self, query, n=5):
-        result = self.db.search(query, top_k=n)
-        return result
+    def get(self):
+        query = request.headers["query"]
+        return self.db.search(query)
+    
+    def post(self):
+        texts = request.json
+        self.db.add(texts)
+        return None
