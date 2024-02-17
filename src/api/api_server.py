@@ -16,6 +16,7 @@ from api.snippet_extractor.snippet_extractor import namespace as snippet_extract
 from api.echo.echo import namespace as echo_namespace
 from api.query_generator.query_generator import namespace as query_generator
 from api.modulizer.modulizer import namespace as modulizer
+from api.liquifier.liquifier import namespace as liquifier_namespace
 
 
 api.add_namespace(container_generator_namespace)
@@ -25,6 +26,7 @@ api.add_namespace(snippet_extractor_namespace)
 api.add_namespace(echo_namespace)
 api.add_namespace(query_generator)
 api.add_namespace(modulizer)
+api.add_namespace(liquifier_namespace)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
