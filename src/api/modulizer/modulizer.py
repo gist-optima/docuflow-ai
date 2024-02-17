@@ -39,9 +39,9 @@ input_schema=namespace.model('Payload',{
 class QueryRegenerator(Resource):
     @namespace.expect(input_schema)
     def post(self):
-        body = request.json["all articles"]
+        body = request.json
 
         global gpt
         message = json.dumps(body, ensure_ascii=False, indent=4)
-        response = gpt.get_response(message)
+        response = gpt.get_response(message, confinement=False)
         return response
