@@ -20,9 +20,9 @@ class SearchVectorDB(Resource):
         self.db = VectorDB()
     
     def get(self):
-        query = request.headers["query"]
-        top_k = request.headers.get("top-k")
-        threshold = request.headers.get("threshold")
+        query = request.args.ge("query")
+        top_k = request.args.get("top-k")
+        threshold = request.args.get("threshold")
         top_k = int(top_k) if top_k else None
         threshold = float(threshold) if threshold else None
         params = {
