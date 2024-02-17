@@ -31,12 +31,13 @@ class VectorDB:
             vectors=[{"id": id, "values": vector} for id, vector in vectors.items()]
         )
     
-    def search(self, query, top_k=5):
+    def search(self, query, top_k=5, threshold=0.95):
         query_vector = self.embed({"query": query})["query"]
         results = self.index.query(
             vector=query_vector, 
             top_k=top_k, 
-            include_metadata=True, 
-            include_values=True
+            include_metadata=False, 
+            include_values=False
         )["matches"]
+        results = filter(lambda result: result["score"] > threshold, results)
         return [result["id"] for result in results]

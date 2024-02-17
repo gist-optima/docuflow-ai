@@ -21,7 +21,9 @@ class SearchVectorDB(Resource):
     
     def get(self):
         query = request.headers["query"]
-        return self.db.search(query)
+        top_k = int(request.headers.get("top-k"))
+        threshold = float(request.headers.get("threshold"))
+        return self.db.search(query, top_k, threshold)
     
     def post(self):
         texts = request.json
