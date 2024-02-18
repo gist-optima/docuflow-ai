@@ -22,14 +22,22 @@ class GPT:
         self.MAX_RETRY = 1
         self.response = ""
 
-    def get_response(self, message):
+    def get_response(self, message, confinement=True):
         self.messages.append({"role": "user", "content": message})
+
         for i in range(self.MAX_RETRY):
-            response = self.client.chat.completions.create(
-                model=self.model,
-                response_format={"type": "json_object"},
-                messages=self.messages,
-            )
+            if confinement: 
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    response_format={"type": "json_object"},
+                    messages=self.messages,
+                )
+            elif not confinement:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=self.messages,
+                )
+
             try:
                 self.response = json.loads(response.choices[0].message.content)
             except:
