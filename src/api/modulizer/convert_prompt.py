@@ -1,7 +1,6 @@
 # %%
 import json
 
-# %%
 with open('prompt.txt', 'r') as f:
     content=f.read()
 
@@ -14,8 +13,6 @@ with open('prompt.json', 'w') as f:
 
 # %% convert json-string format
 text='''
-학교 보고서 작성 예시
-
 제목: 학교 생활에 대한 학생 만족도 조사 및 분석
 
 서론
@@ -46,5 +43,6 @@ Smith, J. (2020). Enhancing Student Satisfaction in Higher Education: A Review o
 Brown, A., & Lee, C. (2019). Student Engagement and Success: Strategies for Improving Retention Rates. Educational Leadership Quarterly, 25(4), 112-125.
 '''
 
-print(json.dumps(text, ensure_ascii=False, indent=4).replace('\\n', " "))
+print(json.dumps(text, ensure_ascii=False, indent=4))
+
 # %%

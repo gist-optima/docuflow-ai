@@ -11,21 +11,21 @@ sys.path.append(BASE_PATH)
 current_directory = BASE_PATH + "/modulizer"
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
-# fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
+fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
 
 prompt = {}
 with open(prompt_file_path, "r", encoding="UTF8") as f:
     prompt = json.load(f)
     prompt = prompt["content"]
 
-# fewshot_examples = []
-# with open(fewshot_examples_file_path, "r", encoding="UTF-8") as f:
-#     fewshot_examples = json.load(f)
-#     for example in fewshot_examples:
-#         example["input"] = json.dumps(
-#             example["input"], ensure_ascii=False, indent=4)
-#         example["output"] = json.dumps(
-#             example["output"], ensure_ascii=False, indent=4)
+fewshot_examples = []
+with open(fewshot_examples_file_path, "r", encoding="UTF-8") as f:
+    fewshot_examples = json.load(f)
+    for example in fewshot_examples:
+        example["input"] = json.dumps(
+            example["input"], ensure_ascii=False, indent=4)
+        example["output"] = json.dumps(
+            example["output"], ensure_ascii=False, indent=4)
 
 namespace = Namespace("modulizer")
 
@@ -36,12 +36,12 @@ input_schema=namespace.model('Payload',{
 })
 
 @namespace.route("")
-class QueryRegenerator(Resource):
+class Modulizer(Resource):
     @namespace.expect(input_schema)
     def post(self):
         body = request.json
 
         global gpt
         message = json.dumps(body, ensure_ascii=False, indent=4)
-        response = gpt.get_response(message, confinement=False)
+        response = gpt.get_response(message)
         return response
