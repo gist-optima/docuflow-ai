@@ -10,13 +10,11 @@ sys.path.append(BASE_PATH)
 
 current_directory = BASE_PATH + "/liquifier"
 
-prompt_file_path = os.path.join(current_directory, "prompt.json")
+prompt_file_path = os.path.join(current_directory, "prompt.txt")
 # fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
 
-prompt = {}
 with open(prompt_file_path, "r", encoding="UTF8") as f:
-    prompt = json.load(f)
-    prompt = prompt["content"]
+    prompt = f.read()
 
 # fewshot_examples = []
 # with open(fewshot_examples_file_path, "r", encoding="UTF-8") as f:
