@@ -11,7 +11,9 @@ import threading
 from flask import request, abort
 from flask_restx import Resource, Namespace
 
-current_directory = os.path.join(BASE_PATH, "snippet_extractor")
+from utils.chunk import Chunk
+
+current_directory = BASE_PATH + "\\snippet_extractor"
 
 prompt_file_path = os.path.join(current_directory, "prompt.json")
 fewshot_examples_file_path = os.path.join(current_directory, "examples.json")
@@ -50,6 +52,17 @@ class snippet_extractor(Resource):
         guiding_vector = body["guiding vector"]
         shown_snippets = body["shown snippets"]
         preffered_snippet = body["preffered snippet"]
+
+        chunker = Chunk()
+        articles = chunker.chunk(
+            "\n\n".join(articles), 
+            prompt \
+            + json.dumps(all_contents, ensure_ascii=False, indent=2) \
+            + focused_container \
+            + guiding_vector \
+            + "".join([json.dumps(snippet, ensure_ascii=False, indent=2) for snippet in shown_snippets]) \
+            + preffered_snippet
+        )
         
         snippets = []
         threads = []
