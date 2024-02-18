@@ -20,23 +20,24 @@ class VectorDB:
     def embed(self, texts):
         response = self.client.embeddings.create(
             model=os.getenv("AZURE_OPENAI_DEPLOYMENT_ADA"), 
-            input=texts
+            input=list(texts.values())
         )
-        embeddings = [embedding_data["embedding"] for embedding_data in response.model_dump()["data"]]
+        embeddings = dict((id, embedding_data["embedding"]) for id, embedding_data in zip(texts.keys(), response.model_dump()["data"]))
         return embeddings
 
     def add(self, texts):
         vectors = self.embed(texts)
         self.index.upsert(
-            vectors=[{"id": text, "values": vector} for text, vector in zip(texts, vectors)]
+            vectors=[{"id": id, "values": vector} for id, vector in vectors.items()]
         )
     
-    def search(self, query, top_k=5):
-        query_vector = self.embed(query)
-        result = self.index.query(
+    def search(self, query, top_k=5, threshold=0.95):
+        query_vector = self.embed({"query": query})["query"]
+        results = self.index.query(
             vector=query_vector, 
             top_k=top_k, 
-            include_metadata=True, 
-            include_values=True
+            include_metadata=False, 
+            include_values=False
         )["matches"]
-        return result
+        results = filter(lambda result: result["score"] > threshold, results)
+        return [result["id"] for result in results]
