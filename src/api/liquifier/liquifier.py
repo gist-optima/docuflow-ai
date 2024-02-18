@@ -32,7 +32,7 @@ namespace = Namespace("liquifier")
 gpt = GPT(prompt)
 
 input_schema = namespace.model('Payload', {
-    'snippets': fields.List(fields.List(fields.String, required=True, description="A sentence or semantic unit"), required=True, description="Array of arrays of sentences or semantic units making up the document"),
+    'all contents': fields.Raw(required=True, description="Dynamic content structure accommodating various fields and numbers of entries"),
 })
 
 @namespace.route("")
