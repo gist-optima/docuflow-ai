@@ -18,6 +18,7 @@ from api.query_generator.query_generator import namespace as query_generator
 from api.modulizer.modulizer import namespace as modulizer
 from api.liquifier.liquifier import namespace as liquifier_namespace
 from api.soft_cache.soft_cache import namespace as soft_cache_namespace
+from api.semantic_diff.semantic_diff import namespace as semantic_diff_namespace
 
 api.add_namespace(container_generator_namespace)
 api.add_namespace(query_regenerator_namespace)
@@ -28,6 +29,7 @@ api.add_namespace(soft_cache_namespace)
 api.add_namespace(query_generator)
 api.add_namespace(modulizer)
 api.add_namespace(liquifier_namespace)
+api.add_namespace(semantic_diff_namespace)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
